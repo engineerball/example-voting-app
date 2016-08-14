@@ -4,28 +4,28 @@ services:
     image: redis
     container_name: redis
     expose: ["6379"]
-#    networks:
-#      - back-tier
+    networks:
+      - back-tier
 
   db:
     image: postgres:9.4
-#    container_name: db
-#    volumes:
-#      - "db-data:/var/lib/postgresql/data"
-#    networks:
-#      - back-tier
+    container_name: db
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    networks:
+      - back-tier
 
   voting-app:
     image: engineerball/voting-app:$GIT_COMMIT
     depends_on:
       - redis
-#    links:
-#      - redis
+    links:
+      - redis
     ports:
       - "5000:80"
-#    networks:
-#      - front-tier
-#      - back-tier
+    networks:
+      - front-tier
+      - back-tier
 
   result-app:
     image: engineerball/result-app:$GIT_COMMIT
@@ -33,28 +33,28 @@ services:
       - "5001:80"
     depends_on:
       - db
-#    links:
-#      - db
-#    networks:
-#      - front-tier
-#      - back-tier
+    links:
+      - db
+    networks:
+      - front-tier
+      - back-tier
 
   worker:
     image: engineerball/worker:$GIT_COMMIT
     depends_on:
       - redis
       - db
-#    links:
-#      - redis
-#      - db
-#    networks:
-#      - back-tier
+    links:
+      - redis
+      - db
+    networks:
+      - back-tier
 
-#volumes:
-#  db-data:
+volumes:
+  db-data:
 
-#networks:
-#  front-tier:
-#    driver: overlay
-#  back-tier:
-#    driver: overlay
+networks:
+  front-tier:
+    driver: overlay
+  back-tier:
+    driver: overlay
