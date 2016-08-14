@@ -1,18 +1,44 @@
-voting-app:
-  image: engineerball/voting-app:$GIT_COMMIT
-  ports:
-    - "5000:80"
-redis:
-  image: redis
-  ports: ["6379"]
+version: "2"
 
-worker:
-  image: engineerball/worker:$GIT_COMMIT
+services:
+  voting-app:
+    image: engineerball/voting-app:$GIT_COMMIT
+    ports:
+      - "5000:80"
+    networks:
+      - front-tier
+      - back-tier
 
-db:
-  image: postgres:9.4
+  result-app:
+    image: engineerball/result-app:$GIT_COMMIT
+    ports:
+      - "5001:80"
+    networks:
+      - front-tier
+      - back-tier
 
-result-app:
-  image: engineerball/result-app:$GIT_COMMIT
-  ports:
-    - "5001:80"
+  worker:
+    image: engineerball/worker:$GIT_COMMIT
+    networks:
+      - back-tier
+
+  redis:
+    image: redis
+    container_name: redis
+    networks:
+      - back-tier
+
+  db:
+    image: postgres:9.4
+    container_name: db
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    networks:
+      - back-tier
+
+volumes:
+  db-data:
+
+networks:
+  front-tier:
+  back-tier:
