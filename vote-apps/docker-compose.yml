@@ -1,5 +1,5 @@
 voting-app:
-  image: $DTR/engineerball/voting-app:$GIT_COMMIT
+  image: engineerball/voting-app:$GIT_COMMIT
   ports:
     - "5000:80"
 redis:
@@ -7,12 +7,12 @@ redis:
   ports: ["6379"]
 
 worker:
-  image: $DTR/engineerball/worker:$GIT_COMMIT
+  image: engineerball/worker:$GIT_COMMIT
 
 db:
   image: postgres:9.4
 
 result-app:
-  image: $DTR/engineerball/result-app:$GIT_COMMIT
+  image: engineerball/result-app:$GIT_COMMIT
   ports:
     - "5001:80"
