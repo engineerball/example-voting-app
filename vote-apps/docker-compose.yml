@@ -5,6 +5,8 @@ services:
     image: engineerball/voting-app:$GIT_COMMIT
     ports:
       - "5000:80"
+    links:
+      - redis
     networks:
       - front-tier
       - back-tier
@@ -19,6 +21,9 @@ services:
 
   worker:
     image: engineerball/worker:$GIT_COMMIT
+    links:
+      - redis
+      - db
     networks:
       - back-tier
 
