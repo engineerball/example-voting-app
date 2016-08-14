@@ -5,6 +5,8 @@ services:
     image: engineerball/voting-app:$GIT_COMMIT
     depends_on:
       - redis
+    links:
+      - redis
     ports:
       - "5000:80"
     networks:
@@ -17,6 +19,8 @@ services:
       - "5001:80"
     depends_on:
       - db
+    links:
+      - db
     networks:
       - front-tier
       - back-tier
@@ -24,6 +28,9 @@ services:
   worker:
     image: engineerball/worker:$GIT_COMMIT
     depends_on:
+      - redis
+      - db
+    links:
       - redis
       - db
     networks:
