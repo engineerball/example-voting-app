@@ -1,5 +1,6 @@
 FROM java:7
 
+RUN sed --in-place 's/httpredir.debian.org/ftp.th.debian.org/' /etc/apt/sources.list
 RUN apt-get update -qq && apt-get install -y maven && apt-get clean
 
 WORKDIR /code
